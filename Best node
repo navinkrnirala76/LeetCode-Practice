@@ -1,0 +1,131 @@
+Problem Statement:
+
+Raju is aiming to get good score in National Memory Test and he is surfing through internet to find out different ways of memorizing the words. He found that jotting down words and recollection is the best way to remember. You have to help Raju in creating an application which will store words and help him in remembering the words better.
+
+The word application has to perform two operations:
+
+1) add word: where a word is a string which denoting the National Memory Test word.This add operation must store word as a new Test word in the application.
+2)find partialWord, a string denoting a partial word to search the application. It must count the number of Test words starting with partialWord and print the count on a new line.
+
+Given P sequential add and find operations, perform each operation in order.
+
+Input Format:
+The first line contains a single integer,P, denoting the number of operations to perform.
+Each line m of the P subsequent lines contains an operation in one of the two forms defined above.
+
+Constraints:
+1 <= P <= 9*10^4
+1< word <22
+1< partialWord <22
+Word and PartialWords contains small letters only
+add operation doesn't add any duplicate words.
+
+Output Format:
+For each find partial operation, print the number of Test words starting with PartialWord on a new line.
+
+Sample Input:
+
+5
+add demure
+find d
+add diligent
+add enmity
+find enm
+
+Sample Output:
+
+1
+1
+
+Explanation:
+
+add demure : This operation will add "demure" as a new word
+find d : This operation will print the count of word starting with d and the count is 1 here.
+add diligent: This operation will add "diligent" as a new word
+add enmity : This operation will add "enmity" as a new word
+find enm: This operation will print the count of word starting with enm and the count is 1 here.
+
+//{ Driver Code Starts 
+#include<bits/stdc++.h> 
+using namespace std; 
+ 
+ 
+class Array 
+{ 
+public: 
+    template <class T> 
+    static void input(vector<T> &A,int n) 
+    { 
+        for (int i = 0; i < n; i++) 
+        { 
+            scanf("%d ",&A[i]); 
+        } 
+    } 
+ 
+    template <class T> 
+    static void print(vector<T> &A) 
+    { 
+        for (int i = 0; i < A.size(); i++) 
+        { 
+            cout << A[i] << " "; 
+        } 
+        cout << endl; 
+    } 
+}; 
+ 
+ 
+// } Driver Code Ends 
+class Solution { 
+  public: 
+    long long bestNode(int N, vector<int> &A, vector<int> &P) { 
+        // code here 
+        set<int> s {P.begin(), P.end()}; 
+        vector<int> leafNodes; 
+        for(int i = 1; i <= N; i++) { 
+            if(!s.count(i)) 
+                leafNodes.push_back(i); 
+        } 
+         
+        long long ans = INT_MIN; 
+        for(auto node: leafNodes) { 
+            long long fb = 0; 
+            while(node != -1) { 
+                fb *= -1; 
+                fb += A[node - 1]; 
+                node = P[node - 1]; 
+                ans = max(ans, fb); 
+            } 
+        } 
+         
+        return ans; 
+    } 
+}; 
+ 
+ 
+//{ Driver Code Starts. 
+ 
+int main(){ 
+    int t; 
+    scanf("%d ",&t); 
+    while(t--){ 
+         
+        int N; 
+        scanf("%d",&N); 
+         
+         
+        vector<int> A(N); 
+        Array::input(A,N); 
+         
+         
+        vector<int> P(N); 
+        Array::input(P,N); 
+         
+        Solution obj; 
+        long long res = obj.bestNode(N, A, P); 
+         
+        cout<<res<<endl; 
+         
+    } 
+} 
+ 
+// } Driver Code Ends
